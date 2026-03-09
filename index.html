@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Para ti mi amor ❤️</title>
+<title>Para Nicolle 💜</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -419,9 +419,76 @@
     position: relative;
     z-index: 2;
   }
+  /* Music button */
+  #music-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 999;
+    background: rgba(45, 26, 36, 0.85);
+    border: 1px solid rgba(201,116,143,0.5);
+    color: var(--rose);
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 20px rgba(201,116,143,0.2);
+  }
+  #music-btn:hover {
+    transform: scale(1.1);
+    border-color: var(--rose);
+    box-shadow: 0 4px 30px rgba(201,116,143,0.4);
+  }
+  #music-btn.playing {
+    animation: musicPulse 2s ease infinite;
+    border-color: var(--rose);
+  }
+  @keyframes musicPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(201,116,143,0.4); }
+    50% { box-shadow: 0 0 0 12px rgba(201,116,143,0); }
+  }
+  #music-label {
+    position: fixed;
+    bottom: 2.4rem;
+    right: 5.5rem;
+    z-index: 999;
+    background: rgba(45,26,36,0.9);
+    border: 1px solid rgba(201,116,143,0.3);
+    color: var(--blush);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  #music-btn:hover ~ #music-label,
+  #music-label.show {
+    opacity: 1;
+    transform: translateX(0);
+  }
 </style>
 </head>
 <body>
+
+<!-- YouTube Audio -->
+<iframe id="yt-player" width="0" height="0" style="display:none"
+  src=""
+  allow="autoplay"
+  frameborder="0"></iframe>
+
+<!-- Music Button -->
+<button id="music-btn" title="Reproducir música">🎵</button>
+<div id="music-label">Perfect · Ed Sheeran</div>
 
 <!-- Cursor -->
 <div class="cursor" id="cursor"></div>
@@ -437,7 +504,7 @@
 <div id="intro">
   <div class="intro-heart">💜</div>
   <div class="intro-text">Un mensaje especial para</div>
-  <div class="intro-name">❤️ Mi amor ❤️</div>
+  <div class="intro-name">Nicolle</div>
 </div>
 
 <!-- Main -->
@@ -573,9 +640,9 @@
   </section>
   <!-- CLOSING -->
   <section id="closing">
-    <span class="big-heart">❤️</span>
+    <span class="big-heart">💜</span>
     <p class="closing-text reveal">
-      Eres <em>extraordinaria</em>,mi princesa.<br>
+      Eres <em>extraordinaria</em>, Nicolle.<br>
       No lo olvides jamás.
     </p>
     <p class="closing-date">8 · 03 · 2026</p>
@@ -583,7 +650,7 @@
 
 </main>
 
-<footer>hecho con amor, solo para ti ❤️</footer>
+<footer>hecho con amor, solo para ti 💜</footer>
 
 <script>
   // Custom cursor
@@ -641,7 +708,28 @@
 
   document.querySelectorAll('.reveal, .reason-card').forEach(el => observer.observe(el));
 
-  // Stagger reason cards
+  // Music player
+  const musicBtn = document.getElementById('music-btn');
+  const musicLabel = document.getElementById('music-label');
+  const ytPlayer = document.getElementById('yt-player');
+  let playing = false;
+
+  musicBtn.addEventListener('click', () => {
+    playing = !playing;
+    if (playing) {
+      ytPlayer.src = "https://www.youtube.com/embed/2Vv-BfVoq4g?autoplay=1&loop=1&playlist=2Vv-BfVoq4g&controls=0";
+      musicBtn.textContent = '🎶';
+      musicBtn.classList.add('playing');
+      musicLabel.classList.add('show');
+      musicLabel.textContent = '♪ Perfect · Ed Sheeran';
+    } else {
+      ytPlayer.src = "";
+      musicBtn.textContent = '🎵';
+      musicBtn.classList.remove('playing');
+      musicLabel.classList.remove('show');
+    }
+  });
+
   document.querySelectorAll('.reason-card').forEach((card, i) => {
     card.style.animationDelay = (i * 0.12) + 's';
   });
